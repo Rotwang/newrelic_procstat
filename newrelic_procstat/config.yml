@@ -8,5 +8,4 @@ general:
    duration: 60
 
 process:
-   nginx
-   apache
+   - unicorn

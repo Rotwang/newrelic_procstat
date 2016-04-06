@@ -236,6 +236,14 @@ def read_config(logger):
     return processes, license, duration
 
 #-----------------------------------------------------------------------------------------------------------
+def find_wanted_process(running_process):
+    print running_process
+    if len(running_process) < 1:
+        return lambda mu: False
+
+    return lambda p: p in running_process[0]
+
+#-----------------------------------------------------------------------------------------------------------
 def find_pid(logger, processes):
 
     logger.debug('Looking up PIDs')
@@ -245,10 +253,10 @@ def find_pid(logger, processes):
     running_procs = psutil.process_iter()
 
     for proc in running_procs:
-        if not proc.name() in processes:
+        if not filter(find_wanted_process(proc.cmdline()), processes):
             continue
 
-        logger.info('Watching process %s with pid %s', proc.name(), proc)
+        logger.info('Watching process %s with pid %s', proc.cmdline(), proc)
         pids.append(proc)
 
     return pids
