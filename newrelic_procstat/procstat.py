@@ -237,7 +237,6 @@ def read_config(logger):
 
 #-----------------------------------------------------------------------------------------------------------
 def find_wanted_process(running_process):
-    print running_process
     if len(running_process) < 1:
         return lambda mu: False
 
